@@ -9,6 +9,8 @@ namespace ChessGame
         {
 
             Board board = new Board(8, 8);
+
+            Screen.printBoard(board);
             Console.ReadLine();
         }
     }

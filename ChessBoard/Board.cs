@@ -6,16 +6,21 @@ namespace ChessBoard
 {
     class Board
     {
-        public int linhas { get; set; }
-        public int colunas { get; set; }
-        public Piece[,] pieces;
+        public int lines { get; set; }
+        public int rows { get; set; }
+        private Piece[,] pieces;
 
-        public Board(int linhas, int colunas)
+        public Board(int lines, int rows)
         {
-            this.linhas = linhas;
-            this.colunas = colunas;
-            pieces = new Piece[linhas, colunas];
+            this.lines = lines;
+            this.rows = rows;
+            pieces = new Piece[lines, rows];
 
+        }
+
+        public Piece piece(int line, int row)
+        {
+            return pieces[line, row];
         }
     }
 }
