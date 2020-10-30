@@ -14,9 +14,9 @@ namespace ChessBoard
         public int qtsMoves { get; protected set; }
         public Board board { get; set; }
 
-        public Piece(Position position, Color color, int qtsMoves, Board board)
+        public Piece(Board board, Color color)
         {
-            this.position = position;
+            this.position = null;
             this.color = color;
             this.qtsMoves = 0;
             this.board = board;

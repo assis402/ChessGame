@@ -22,5 +22,13 @@ namespace ChessBoard
         {
             return pieces[line, row];
         }
+
+        public void putPiece(Piece p, Position pos)
+        {
+            pieces[pos.linha, pos.coluna] = p;
+            p.position = pos;
+
+        }
     }
+
 }
