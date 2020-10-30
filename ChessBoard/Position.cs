@@ -6,20 +6,20 @@ namespace ChessBoard
 {
     class Position
     {
-        public int linha { get; set; }
-        public int coluna { get; set; }
+        public int line { get; set; }
+        public int row { get; set; }
 
-        public Position(int linha, int coluna)
+        public Position(int line, int row)
         {
-            this.linha = linha;
-            this.coluna = coluna;
+            this.line = line;
+            this.row = row;
         }
 
         public override string ToString()
         {
-            return linha
+            return line
                 + ", "
-                + coluna;
+                + row;
         }
     }
 }
