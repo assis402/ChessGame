@@ -14,23 +14,40 @@ namespace ChessGame
 
                 while (!match.finished)
                 {
-                    Console.Clear();
-                    Screen.printBoard(match.board);
+                    try
+                    {
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
-                    Position origin = Screen.writhPosition().toPosition();
+                        Console.Clear();
+                        Screen.printBoard(match.board);
+                        Console.WriteLine();
 
-                    bool[,] possiblePositions = match.board.piece(origin).possibleMoves();
+                        Console.WriteLine("Turn: " + match.turn + "º");
+                        Console.WriteLine("Next move: " + match.currentPlayer);
 
-                    Console.Clear();
-                    Screen.printBoard(match.board, possiblePositions);
+                        Console.WriteLine();
+                        Console.Write("Origin: ");
+                        Position origin = Screen.writhPosition().toPosition();
+                        match.validateOriginPosition(origin);
 
-                    Console.WriteLine();
-                    Console.Write("Destiny: ");
-                    Position destiny = Screen.writhPosition().toPosition();
+                        bool[,] possiblePositions = match.board.piece(origin).possibleMoves();
 
-                    match.execMove(origin, destiny);
+                        Console.Clear();
+                        Screen.printBoard(match.board, possiblePositions);
+
+                        Console.WriteLine();
+                        Console.Write("Destiny: ");
+                        Position destiny = Screen.writhPosition().toPosition();
+                        match.validateDestinyPosition(origin, destiny);
+
+                        match.Move(origin, destiny);
+
+                    }
+
+                    catch (BoardException e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.ReadLine();
+                    }
 
                 }
 

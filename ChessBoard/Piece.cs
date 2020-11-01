@@ -27,6 +27,28 @@ namespace ChessBoard
             qtsMoves++;
         }
 
+        public bool isTherePossibleMove()
+        {
+            bool[,] mat = possibleMoves();
+            for (int i=0; i<board.Lines; i++)
+            {
+                for (int j = 0; j < board.Lines; j++)
+                {
+                    if (mat[i, j])
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool canMoveTo(Position pos)
+        {
+            return possibleMoves()[pos.line, pos.row];
+        }
+
         public abstract bool[,] possibleMoves();
     }
 }
