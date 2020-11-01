@@ -14,6 +14,11 @@ namespace ChessBoard
             this.line = line;
             this.row = row;
         }
+        public void defineValues(int line, int row)
+        {
+            this.line = line;
+            this.row = row;
+        }
 
         public override string ToString()
         {
