@@ -21,5 +21,10 @@ namespace ChessBoard
             this.qtsMoves = 0;
             this.board = board;
         }
+
+        public void increaseQtsMoves()
+        {
+            qtsMoves++;
+        }
     }
 }

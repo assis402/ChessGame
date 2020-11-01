@@ -1,6 +1,8 @@
-﻿using ChessBoard;
+﻿using Chess;
+using ChessBoard;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Reflection.PortableExecutable;
 using System.Text;
 
@@ -10,10 +12,10 @@ namespace ChessGame
     {
         public static void printBoard(Board board)
         {
-            for (int i= 0; i< board.lines; i++)
+            for (int i= 0; i< board.Lines; i++)
             {
                 Console.Write(8 - i + " ");
-                for (int j= 0; j< board.rows; j++)
+                for (int j= 0; j< board.Rows; j++)
                 {
                     
                     if (board.piece(i, j) == null)
@@ -45,6 +47,15 @@ namespace ChessGame
                 Console.Write(piece);
                 Console.ForegroundColor = aux;
             }
+        }
+
+        public static ChessPosition writhPosition()
+        {
+            string s = Console.ReadLine();
+            char row = s[0];
+            int line = int.Parse(s[1] + " ");
+            return new ChessPosition(row, line);
+
         }
     }
 }

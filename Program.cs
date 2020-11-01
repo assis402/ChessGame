@@ -1,5 +1,5 @@
-﻿using ChessBoard;
-using ChessGame.Chess;
+﻿using Chess;
+using ChessBoard;
 using System;
 
 namespace ChessGame
@@ -10,13 +10,24 @@ namespace ChessGame
         {
             try
             {
-                Board board = new Board(8, 8);
+                ChessMatch match = new ChessMatch();
 
-                board.putPiece(new Tower(board, Color.Black), new Position(0, 0));
-                board.putPiece(new Tower(board, Color.White), new Position(1, 3));
-                board.putPiece(new King(board, Color.Black), new Position(0, 2));
+                while (!match.finished)
+                {
+                    Console.Clear();
+                    Screen.printBoard(match.board);
 
-                Screen.printBoard(board);
+                    Console.WriteLine();
+                    Console.Write("Origin: ");
+                    Position origin = Screen.writhPosition().toPosition();
+                    Console.Write("Destiny: ");
+                    Position destiny = Screen.writhPosition().toPosition();
+
+                    match.execMove(origin, destiny);
+
+                }
+
+                
             }
 
             catch (BoardException e)

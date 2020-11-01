@@ -7,14 +7,14 @@ namespace ChessBoard
 {
     class Board
     {
-        public int lines { get; set; }
-        public int rows { get; set; }
+        public int Lines { get; set; }
+        public int Rows { get; set; }
         private Piece[,] pieces;
 
         public Board(int lines, int rows)
         {
-            this.lines = lines;
-            this.rows = rows;
+            this.Lines = lines;
+            this.Rows = rows;
             pieces = new Piece[lines, rows];
 
         }
@@ -46,9 +46,21 @@ namespace ChessBoard
 
         }
 
+        public Piece removePiece(Position pos)
+        {
+            if (piece(pos) == null)
+            {
+                return null;
+            }
+            Piece aux = piece(pos);
+            aux.position = null;
+            pieces[pos.line, pos.row] = null;
+            return aux;
+        }
+
         public bool validPosition(Position pos)
         {
-            if (pos.line < 0 || pos.line >= lines || pos.row < 0 || pos.row >= rows)
+            if (pos.line < 0 || pos.line >= Lines || pos.row < 0 || pos.row >= Rows)
             {
                 return false;
             }
