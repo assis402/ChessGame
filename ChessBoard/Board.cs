@@ -52,7 +52,6 @@ namespace ChessBoard
             {
                 return null;
             }
-            
             Piece aux = piece(pos);
             aux.position = null;
             pieces[pos.line, pos.row] = null;

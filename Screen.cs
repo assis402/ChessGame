@@ -13,6 +13,10 @@ namespace ChessGame
     {
         public static void printMatch(ChessMatch match)
         {
+            ConsoleColor originalBackground = Console.BackgroundColor;
+            ConsoleColor alteredBackgroundRed = ConsoleColor.DarkRed;
+            ConsoleColor alteredBackgroundYellow = ConsoleColor.DarkYellow;
+
             printBoard(match.board);
             Console.WriteLine();
             printCapturedPieces(match);
@@ -23,17 +27,19 @@ namespace ChessGame
                 Console.WriteLine("Next move: " + match.currentPlayer);
                 if (match.check)
                 {
-                    Console.WriteLine("XEQUE");
+                    Console.BackgroundColor = alteredBackgroundYellow;
+                    Console.WriteLine("CHECK!");
+                    Console.BackgroundColor = originalBackground;
                 }
-
             }
 
             else
             {
+                Console.BackgroundColor = alteredBackgroundRed;
                 Console.WriteLine("CHECKMATE!");
+                Console.BackgroundColor = originalBackground;
                 Console.WriteLine("Winner: " + match.currentPlayer);
             }
-
             
         }
 
@@ -55,12 +61,10 @@ namespace ChessGame
         public static void printGroup(HashSet<Piece> group)
         {
             Console.Write("[");
-
             if (group.Count == 1)
             {
                 Console.Write(group.ElementAt(0));
             }
-
             else if (group.Count > 1)
             {
                 Console.Write(group.ElementAt(0));
@@ -69,7 +73,6 @@ namespace ChessGame
                     Console.Write(" " + group.ElementAt(i));
                 }
             }
-
             Console.Write("]");
         }
 
@@ -90,15 +93,18 @@ namespace ChessGame
 
         public static void printBoard(Board board, bool[,] possiblePositions)
         {
-            ConsoleColor originalBackground = Console.BackgroundColor;
-            ConsoleColor alteredBackground = ConsoleColor.DarkRed;
+
 
             for (int i = 0; i < board.Lines; i++)
             {
                 Console.Write(" " + (8 - i) + " ");
+                ConsoleColor originalBackground = Console.BackgroundColor;
+                ConsoleColor alteredBackground = ConsoleColor.DarkRed;
 
                 for (int j = 0; j < board.Rows; j++)
                 {
+
+
                     if (possiblePositions[i, j])
                     {
                         Console.BackgroundColor = alteredBackground;
@@ -110,14 +116,12 @@ namespace ChessGame
                     }
 
                     printPiece(board.piece(i, j));
-                    Console.BackgroundColor = originalBackground;
-
                 }
+                Console.BackgroundColor = originalBackground;
                 Console.WriteLine();
             }
 
             Console.WriteLine("   a b c d e f g h ");
-            Console.BackgroundColor = originalBackground;
 
         }
 

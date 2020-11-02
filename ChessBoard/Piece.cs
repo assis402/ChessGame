@@ -17,17 +17,15 @@ namespace ChessBoard
         public Piece(Board board, Color color)
         {
             this.position = null;
-            this.board = board;
             this.color = color;
             this.qtsMoves = 0;
-            
+            this.board = board;
         }
 
         public void increaseQtsMoves()
         {
             qtsMoves++;
         }
-
         public void retireQtsMoves()
         {
             qtsMoves--;

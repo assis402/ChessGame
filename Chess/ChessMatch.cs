@@ -1,5 +1,9 @@
 ﻿using ChessBoard;
+using ChessGame;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace Chess
 {
@@ -20,6 +24,7 @@ namespace Chess
             currentPlayer = Color.White;
             finished = false;
             check = false;
+
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
 
@@ -49,6 +54,8 @@ namespace Chess
                 throw new BoardException("You can't put yourself in checkmate.");
             }
 
+            Piece p = board.piece(destiny);
+
             if (isInCheck(opponent(currentPlayer)))
             {
                 check = true;
@@ -70,6 +77,18 @@ namespace Chess
                 changePlayer();
             }
             
+        }
+
+        public void undoMove(Position origin, Position destiny, Piece capturedPiece)
+        {
+            Piece p = board.removePiece(destiny);
+            p.retireQtsMoves();
+            if (capturedPiece != null)
+            {
+                board.putPiece(capturedPiece, destiny);
+                captured.Remove(capturedPiece);
+            }
+            board.putPiece(p, origin);
         }
 
         public void validateOriginPosition(Position pos)
@@ -133,7 +152,6 @@ namespace Chess
                 {
                     aux.Add(x);
                 }
-
             }
             aux.ExceptWith(capturedPieces(color));
             return aux;
@@ -170,11 +188,10 @@ namespace Chess
             {
                 throw new BoardException("There is no king of " + color + " color on the board.");
             }
-
-            foreach (Piece x in pieceOnTheBoard(opponent(color)))
+            foreach(Piece x in pieceOnTheBoard(opponent(color)))
             {
                 bool[,] mat = x.possibleMoves();
-                if (mat[K.position.line, K.position.row])
+                if(mat[K.position.line, K.position.row])
                 {
                     return true;
                 }
@@ -191,9 +208,9 @@ namespace Chess
             foreach (Piece x in pieceOnTheBoard(color))
             {
                 bool[,] mat = x.possibleMoves();
-                for (int i = 0; i < board.Lines; i++)
+                for(int i=0; i< board.Lines; i++)
                 {
-                    for (int j = 0; j < board.Rows; j++)
+                    for (int j=0; j<board.Rows; j++)
                     {
                         if (mat[i, j])
                         {
@@ -201,8 +218,7 @@ namespace Chess
                             Position destiny = new Position(i, j);
                             Piece capturedPiece = execMove(origin, destiny);
                             bool testCheck = isInCheck(color);
-                            undoMove(x.position, destiny, capturedPiece);
-
+                            undoMove(origin, destiny, capturedPiece);
                             if (!testCheck)
                             {
                                 return false;
@@ -214,18 +230,6 @@ namespace Chess
             return true;
         }
 
-        public void undoMove(Position origin, Position destiny, Piece capturedPiece)
-        {
-            Piece p = board.removePiece(destiny);
-            p.retireQtsMoves();
-            if (capturedPiece != null)
-            {
-                board.putPiece(capturedPiece, destiny);
-                captured.Remove(capturedPiece);
-            }
-            board.putPiece(p, origin);
-        }
-
         public void putNewPiece(char row, int line, Piece piece)
         {
             board.putPiece(piece, new ChessPosition(row, line).toPosition());
@@ -235,6 +239,13 @@ namespace Chess
         private void putPieces()
         {
             putNewPiece('c', 1, new Tower(board, Color.White));
+            putNewPiece('d', 1, new King(board, Color.White));
+            putNewPiece('h', 7, new Tower(board, Color.White));
+
+            putNewPiece('a', 8, new King(board, Color.Black));
+            putNewPiece('b', 8, new Tower(board, Color.Black));
+
+            /*putNewPiece('c', 1, new Tower(board, Color.White));
             putNewPiece('c', 2, new Tower(board, Color.White));
             putNewPiece('d', 2, new Tower(board, Color.White));
             putNewPiece('e', 2, new Tower(board, Color.White));
@@ -247,7 +258,7 @@ namespace Chess
             putNewPiece('e', 7, new Tower(board, Color.Black));
             putNewPiece('e', 8, new Tower(board, Color.Black));
             putNewPiece('d', 8, new King(board, Color.Black));
-
+            */
         }
 
     }
