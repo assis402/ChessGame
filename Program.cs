@@ -19,12 +19,7 @@ namespace ChessGame
 
                         Console.Clear();
                         Screen.printMatch(match);
-                        /*Screen.printBoard(match.board);
-                        Console.WriteLine();
-
-                        Console.WriteLine("Turn: " + match.turn + "º");
-                        Console.WriteLine("Next move: " + match.currentPlayer);
-                        */
+                        
                         Console.WriteLine();
                         Console.Write("Origin: ");
                         Position origin = Screen.writhPosition().toPosition();

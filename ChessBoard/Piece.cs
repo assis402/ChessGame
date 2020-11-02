@@ -27,6 +27,11 @@ namespace ChessBoard
             qtsMoves++;
         }
 
+        public void retireQtsMoves()
+        {
+            qtsMoves--;
+        }
+
         public bool isTherePossibleMove()
         {
             bool[,] mat = possibleMoves();

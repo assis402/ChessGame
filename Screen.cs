@@ -19,6 +19,10 @@ namespace ChessGame
             Console.WriteLine();
             Console.WriteLine("Turn: " + match.turn + "º");
             Console.WriteLine("Next move: " + match.currentPlayer);
+            if (match.checkMate)
+            {
+                Console.WriteLine("XEQUE");
+            }
         }
 
         public static void printCapturedPieces(ChessMatch match)
