@@ -15,8 +15,7 @@ namespace ChessGame
                 while (!match.finished)
                 {
                     try
-                    {
-
+                    { 
                         Console.Clear();
                         Screen.printMatch(match);
                         
@@ -36,7 +35,6 @@ namespace ChessGame
                         match.validateDestinyPosition(origin, destiny);
 
                         match.Move(origin, destiny);
-
                     }
 
                     catch (BoardException e)
@@ -46,8 +44,8 @@ namespace ChessGame
                     }
 
                 }
-
-                
+                Console.Clear();
+                Screen.printMatch(match);
             }
 
             catch (BoardException e)

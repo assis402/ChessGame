@@ -1,22 +1,17 @@
 ﻿using ChessBoard;
-using ChessGame;
-using System;
 using System.Collections.Generic;
-using System.Reflection.PortableExecutable;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace Chess
 {
     class ChessMatch
     {
-        public Board board { get; set; }
-        public int turn { get; set; }
-        public Color currentPlayer { get; set; }
-        public bool finished { get; set; }
+        public Board board { get; private set; }
+        public int turn { get; private set; }
+        public Color currentPlayer { get; private set; }
+        public bool finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
-        public bool checkMate { get; private set; }
+        public bool check { get; private set; }
 
         public ChessMatch()
         {
@@ -24,35 +19,57 @@ namespace Chess
             turn = 1;
             currentPlayer = Color.White;
             finished = false;
-
+            check = false;
             pieces = new HashSet<Piece>();
             captured = new HashSet<Piece>();
 
             putPieces();
         }
 
+        public Piece execMove(Position origin, Position destiny)
+        {
+            Piece p = board.removePiece(origin);
+            p.increaseQtsMoves();
+            Piece capturedPiece = board.removePiece(destiny);
+            board.putPiece(p, destiny);
+            if (capturedPiece != null)
+            {
+                captured.Add(capturedPiece);
+            }
+            return capturedPiece;
+        }
+
         public void Move(Position origin, Position destiny)
         {
             Piece capturedPiece = execMove(origin, destiny);
 
-            if (isInCheckMate(currentPlayer))
+            if (isInCheck(currentPlayer))
             {
                 undoMove(origin, destiny, capturedPiece);
                 throw new BoardException("You can't put yourself in checkmate.");
             }
 
-            if (isInCheckMate(opponent(currentPlayer)))
+            if (isInCheck(opponent(currentPlayer)))
             {
-                checkMate = true;
+                check = true;
             }
 
             else
             {
-                checkMate = false;
+                check = false;
             }
 
-            turn++;
-            changePlayer();
+            if (testCheckMate(opponent(currentPlayer)))
+            {
+                finished = true;
+            }
+
+            else
+            {
+                turn++;
+                changePlayer();
+            }
+            
         }
 
         public void validateOriginPosition(Position pos)
@@ -146,12 +163,12 @@ namespace Chess
             return null;
         }
 
-        public bool isInCheckMate(Color color)
+        public bool isInCheck(Color color)
         {
             Piece K = king(color);
             if (K == null)
             {
-                throw new BoardException("There is no king of " + color + "color on the board.");
+                throw new BoardException("There is no king of " + color + " color on the board.");
             }
 
             foreach (Piece x in pieceOnTheBoard(opponent(color)))
@@ -165,17 +182,36 @@ namespace Chess
             return false;
         }
 
-        public Piece execMove(Position origin, Position destiny)
+        public bool testCheckMate(Color color)
         {
-            Piece p = board.removePiece(origin);
-            p.increaseQtsMoves();
-            Piece capturedPiece = board.removePiece(destiny);
-            board.putPiece(p, destiny);
-            if (capturedPiece != null)
+            if (!isInCheck(color))
             {
-                captured.Add(capturedPiece);
+                return false;
             }
-            return capturedPiece;
+            foreach (Piece x in pieceOnTheBoard(color))
+            {
+                bool[,] mat = x.possibleMoves();
+                for (int i = 0; i < board.Lines; i++)
+                {
+                    for (int j = 0; j < board.Rows; j++)
+                    {
+                        if (mat[i, j])
+                        {
+                            Position origin = x.position;
+                            Position destiny = new Position(i, j);
+                            Piece capturedPiece = execMove(origin, destiny);
+                            bool testCheck = isInCheck(color);
+                            undoMove(x.position, destiny, capturedPiece);
+
+                            if (!testCheck)
+                            {
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
+            return true;
         }
 
         public void undoMove(Position origin, Position destiny, Piece capturedPiece)

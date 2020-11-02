@@ -17,9 +17,10 @@ namespace ChessBoard
         public Piece(Board board, Color color)
         {
             this.position = null;
+            this.board = board;
             this.color = color;
             this.qtsMoves = 0;
-            this.board = board;
+            
         }
 
         public void increaseQtsMoves()
@@ -37,7 +38,7 @@ namespace ChessBoard
             bool[,] mat = possibleMoves();
             for (int i=0; i<board.Lines; i++)
             {
-                for (int j = 0; j < board.Lines; j++)
+                for (int j = 0; j < board.Rows; j++)
                 {
                     if (mat[i, j])
                     {
