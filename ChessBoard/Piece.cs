@@ -48,7 +48,7 @@ namespace ChessBoard
             return false;
         }
 
-        public bool canMoveTo(Position pos)
+        public bool possibleMove(Position pos)
         {
             return possibleMoves()[pos.line, pos.row];
         }

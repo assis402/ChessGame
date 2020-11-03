@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Chess
 {
-    class Tower : Piece
+    class Bishop : Piece
     {
-        public Tower(Board board, Color color) : base(board, color)
+        public Bishop(Board board, Color color) : base(board, color)
         {
 
         }
@@ -23,8 +23,8 @@ namespace Chess
             bool[,] mat = new bool[board.Lines, board.Rows];
             Position pos = new Position(0, 0);
 
-            // N
-            pos.defineValues(position.line - 1, position.row);
+            // NW
+            pos.defineValues(position.line - 1, position.row - 1);
             while (board.validPosition(pos) && canMove(pos))
             {
                 mat[pos.line, pos.row] = true;
@@ -32,12 +32,12 @@ namespace Chess
                 {
                     break;
                 }
-                pos.line -= 1;
+                pos.defineValues(position.line - 1, position.row - 1);
 
             }
 
-            // S
-            pos.defineValues(position.line + 1, position.row);
+            // NE
+            pos.defineValues(position.line - 1, position.row + 1);
             while (board.validPosition(pos) && canMove(pos))
             {
                 mat[pos.line, pos.row] = true;
@@ -45,12 +45,12 @@ namespace Chess
                 {
                     break;
                 }
-                pos.line += 1;
+                pos.defineValues(position.line - 1, position.row + 1);
 
             }
 
-            // E
-            pos.defineValues(position.line, position.row + 1);
+            // SW
+            pos.defineValues(position.line + 1, position.row - 1);
             while (board.validPosition(pos) && canMove(pos))
             {
                 mat[pos.line, pos.row] = true;
@@ -58,12 +58,12 @@ namespace Chess
                 {
                     break;
                 }
-                pos.row += 1;
+                pos.defineValues(position.line + 1, position.row - 1);
 
             }
 
-            // W
-            pos.defineValues(position.line, position.row - 1);
+            // SE
+            pos.defineValues(position.line + 1, position.row + 1);
             while (board.validPosition(pos) && canMove(pos))
             {
                 mat[pos.line, pos.row] = true;
@@ -71,7 +71,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.row -= 1;
+                pos.defineValues(position.line + 1, position.row + 1);
 
             }
 
@@ -81,7 +81,7 @@ namespace Chess
 
         public override string ToString()
         {
-            return "T";
+            return "B";
         }
 
     }
