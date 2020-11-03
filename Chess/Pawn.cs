@@ -7,9 +7,10 @@ namespace Chess
 {
     class Pawn : Piece
     {
-        public Pawn(Board board, Color color) : base(board, color)
+        private ChessMatch match;
+        public Pawn(Board board, Color color, ChessMatch match) : base(board, color)
         {
-
+            this.match = match;
         }
 
         private bool enemy(Position pos)
@@ -51,6 +52,22 @@ namespace Chess
                 {
                     mat[pos.line, pos.row] = true;
                 }
+
+                // EN PASSANT
+
+                if (position.line == 3)
+                {
+                    Position left = new Position(position.line, position.row - 1);
+                    if (board.validPosition(left) && enemy(left) && board.piece(left) == match.enPassant)
+                    {
+                        mat[left.line - 1, left.row] = true;
+                    }
+                    Position right = new Position(position.line, position.row + 1);
+                    if (board.validPosition(right) && enemy(right) && board.piece(right) == match.enPassant)
+                    {
+                        mat[right.line - 1, right.row] = true;
+                    }
+                }
             }
 
             else
@@ -76,6 +93,23 @@ namespace Chess
                 {
                     mat[pos.line, pos.row] = true;
                 }
+
+                // EN PASSANT
+
+                if (position.line == 4)
+                {
+                    Position left = new Position(position.line, position.row - 1);
+                    if (board.validPosition(left) && enemy(left) && board.piece(left) == match.enPassant)
+                    {
+                        mat[left.line + 1, left.row] = true;
+                    }
+                    Position right = new Position(position.line, position.row + 1);
+                    if (board.validPosition(right) && enemy(right) && board.piece(right) == match.enPassant)
+                    {
+                        mat[right.line + 1, right.row] = true;
+                    }
+                }
+
             }
 
             return mat;
