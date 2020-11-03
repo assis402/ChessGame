@@ -100,6 +100,21 @@ namespace Chess
 
             Piece p = board.piece(destiny);
 
+            // PROMOTION SPECIAL MOVE
+
+            if(p is Pawn)
+            {
+                if (p.color == Color.White && destiny.line == 0 || p.color == Color.Black && destiny.line == 7)
+                {
+                    p = board.removePiece(destiny);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(board, p.color);
+                    board.putPiece(queen, destiny);
+                    pieces.Add(queen);
+
+                }
+            }
+
             if (isInCheck(opponent(currentPlayer)))
             {
                 check = true;
