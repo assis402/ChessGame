@@ -32,8 +32,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line - 1, position.row - 1);
-
+                pos.defineValues(pos.line - 1, pos.row - 1);
             }
 
             // NE
@@ -45,21 +44,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line - 1, position.row + 1);
-
-            }
-
-            // SW
-            pos.defineValues(position.line + 1, position.row - 1);
-            while (board.validPosition(pos) && canMove(pos))
-            {
-                mat[pos.line, pos.row] = true;
-                if (board.piece(pos) != null && board.piece(pos).color != color)
-                {
-                    break;
-                }
-                pos.defineValues(position.line + 1, position.row - 1);
-
+                pos.defineValues(pos.line - 1, pos.row + 1);
             }
 
             // SE
@@ -71,9 +56,21 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line + 1, position.row + 1);
-
+                pos.defineValues(pos.line + 1, pos.row + 1);
             }
+
+            // SW
+            pos.defineValues(position.line + 1, position.row - 1);
+            while (board.validPosition(pos) && canMove(pos))
+            {
+                mat[pos.line, pos.row] = true;
+                if (board.piece(pos) != null && board.piece(pos).color != color)
+                {
+                    break;
+                }
+                pos.defineValues(pos.line + 1, pos.row - 1);
+            }
+
 
             return mat;
 

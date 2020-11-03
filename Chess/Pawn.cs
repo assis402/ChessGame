@@ -36,7 +36,8 @@ namespace Chess
                     mat[pos.line, pos.row] = true;
                 }
                 pos.defineValues(position.line - 2, position.row);
-                if (board.validPosition(pos) && free(pos) && qtsMoves == 0)
+                Position p2 = new Position(position.line - 1, position.row);
+                if (board.validPosition(p2) && free(p2) && board.validPosition(pos) && free(pos) && qtsMoves == 0)
                 {
                     mat[pos.line, pos.row] = true;
                 }
@@ -60,7 +61,8 @@ namespace Chess
                     mat[pos.line, pos.row] = true;
                 }
                 pos.defineValues(position.line + 2, position.row);
-                if (board.validPosition(pos) && free(pos) && qtsMoves == 0)
+                Position p2 = new Position(position.line + 1, position.row);
+                if (board.validPosition(p2) && free(p2) && board.validPosition(pos) && free(pos) && qtsMoves == 0)
                 {
                     mat[pos.line, pos.row] = true;
                 }

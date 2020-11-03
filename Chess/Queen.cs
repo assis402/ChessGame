@@ -84,7 +84,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line - 1, position.row - 1);
+                pos.defineValues(pos.line - 1, pos.row - 1);
 
             }
 
@@ -97,7 +97,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line - 1, position.row + 1);
+                pos.defineValues(pos.line - 1, pos.row + 1);
 
             }
 
@@ -110,7 +110,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line + 1, position.row - 1);
+                pos.defineValues(pos.line + 1, pos.row - 1);
 
             }
 
@@ -123,7 +123,7 @@ namespace Chess
                 {
                     break;
                 }
-                pos.defineValues(position.line + 1, position.row + 1);
+                pos.defineValues(pos.line + 1, pos.row + 1);
 
             }
 
