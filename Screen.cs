@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ChessGame
 {
-    class Screen
+    internal class Screen
     {
         public static void printMatch(ChessMatch match)
         {
@@ -17,15 +17,15 @@ namespace ChessGame
             ConsoleColor alteredBackgroundRed = ConsoleColor.DarkRed;
             ConsoleColor alteredBackgroundYellow = ConsoleColor.DarkYellow;
 
-            printBoard(match.board);
+            printBoard(match.Board);
             Console.WriteLine();
             printCapturedPieces(match);
             Console.WriteLine();
-            Console.WriteLine("Turn: " + match.turn + "º");
-            if (!match.finished)
+            Console.WriteLine("Turn: " + match.Turn + "º");
+            if (!match.Finished)
             {
-                Console.WriteLine("Next move: " + match.currentPlayer);
-                if (match.check)
+                Console.WriteLine("Next move: " + match.CurrentPlayer);
+                if (match.Check)
                 {
                     Console.BackgroundColor = alteredBackgroundYellow;
                     Console.WriteLine("CHECK!");
@@ -38,7 +38,7 @@ namespace ChessGame
                 Console.BackgroundColor = alteredBackgroundRed;
                 Console.WriteLine("CHECKMATE!");
                 Console.BackgroundColor = originalBackground;
-                Console.WriteLine("Winner: " + match.currentPlayer);
+                Console.WriteLine("Winner: " + match.CurrentPlayer);
             }
             
         }
@@ -83,7 +83,7 @@ namespace ChessGame
                 Console.Write(" " + (8 - i) + " ");
                 for (int j = 0; j < board.Rows; j++)
                 {
-                    printPiece(board.piece(i, j));
+                    printPiece(board.GetPieceByPosition(i, j));
                 }
                 Console.WriteLine();
             }
@@ -115,7 +115,7 @@ namespace ChessGame
                         Console.BackgroundColor = originalBackground;
                     }
 
-                    printPiece(board.piece(i, j));
+                    printPiece(board.GetPieceByPosition(i, j));
                 }
                 Console.BackgroundColor = originalBackground;
                 Console.WriteLine();
@@ -135,7 +135,7 @@ namespace ChessGame
 
             else
             {
-                if (piece.color == Color.White)
+                if (piece.Color == Color.White)
                 {
                     Console.Write(piece);
                 }

@@ -4,15 +4,15 @@ using System;
 
 namespace ChessGame
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             try
             {
                 ChessMatch match = new ChessMatch();
 
-                while (!match.finished)
+                while (!match.Finished)
                 {
                     try
                     {
@@ -25,17 +25,17 @@ namespace ChessGame
                         Position origin = Screen.writhPosition().toPosition();
                         match.validateOriginPosition(origin);
 
-                        bool[,] possiblePositions = match.board.piece(origin).possibleMoves();
+                        bool[,] possiblePositions = match.Board.GetPieceByPosition(origin).PossibleMoves();
 
                         Console.Clear();
-                        Screen.printBoard(match.board, possiblePositions);
+                        Screen.printBoard(match.Board, possiblePositions);
 
                         Console.WriteLine();
                         Console.Write("Destiny: ");
                         Position destiny = Screen.writhPosition().toPosition();
                         match.validateDestinyPosition(origin, destiny);
 
-                        match.Move(origin, destiny);
+                        match.move(origin, destiny);
 
                     }
 

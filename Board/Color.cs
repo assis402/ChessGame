@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ChessBoard
 {
-    enum Color
+    public enum Color
     {
         White,
         Black,
