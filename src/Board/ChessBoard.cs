@@ -2,54 +2,54 @@
 
 namespace ChessGame.Board;
 
-public class ChessBoard
+internal class ChessBoard
 {
-    public int Lines { get; }
+    internal ChessBoard(int rows, int columns)
+    {
+        Rows = rows;
+        Columns = columns;
+        _pieces = new Piece[rows, columns];
+    }
+    
+    internal int Rows { get; }
         
-    public int Rows { get; }
-        
+    internal int Columns { get; }
+    
     private readonly Piece[,] _pieces;
 
-    public ChessBoard(int lines, int rows)
-    {
-        Lines = lines;
-        Rows = rows;
-        _pieces = new Piece[lines, rows];
-    }
+    internal Piece GetPieceByPosition(int row, int column) => _pieces[row, column];
 
-    public Piece GetPieceByPosition(int line, int row) => _pieces[line, row];
-
-    public Piece GetPieceByPosition(Position pos) => _pieces[pos.Line, pos.Row];
+    internal Piece GetPieceByPosition(Position pos) => _pieces[pos.Row, pos.Column];
 
     private bool IsTherePieceInThisPosition(Position position)
     {
-        if (!ValidatePosition(position))
+        if (!IsValidPosition(position))
             throw new BoardException("Invalid Position!");
             
         return GetPieceByPosition(position) is not null;
     }
 
-    public void PutPiece(Piece piece, Position position)
+    internal void PutPiece(Piece piece, Position position)
     {
         if (IsTherePieceInThisPosition(position))
             throw new BoardException("There is already a piece in that position!");
 
-        _pieces[position.Line, position.Row] = piece;
+        _pieces[position.Row, position.Column] = piece;
         piece.SetPosition(position);
     }
 
-    public Piece RemovePiece(Position pos)
+    internal Piece RemovePiece(Position position)
     {
-        if (GetPieceByPosition(pos) is null)
+        if (GetPieceByPosition(position) is null)
             return null;
             
-        var piece = GetPieceByPosition(pos);
+        var piece = GetPieceByPosition(position);
         piece.SetPosition(null);
-        _pieces[pos.Line, pos.Row] = null;
+        _pieces[position.Row, position.Column] = null;
             
         return piece;
     }
 
-    public bool ValidatePosition(Position pos) 
-        => pos.Line >= 0 && pos.Line < Lines && pos.Row >= 0 && pos.Row < Rows;
+    internal bool IsValidPosition(Position position) 
+        => position.Row >= 0 && position.Row < Rows && position.Column >= 0 && position.Column < Columns;
 }

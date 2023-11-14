@@ -2,16 +2,8 @@
 
 namespace ChessGame.Pieces;
 
-public abstract class Piece
+internal abstract class Piece
 {
-    public Position Position { get; protected set; }
-        
-    public Color Color { get; }
-
-    public int TotalMoves { get; private set; }
-
-    protected ChessBoard ChessBoard { get; }
-
     protected Piece(ChessBoard chessBoard, Color color)
     {
         Position = null;
@@ -20,33 +12,49 @@ public abstract class Piece
         ChessBoard = chessBoard;
     }
     
+    internal Position Position { get; private set; }
+        
+    internal Color Color { get; }
+
+    internal int TotalMoves { get; private set; }
+
+    protected ChessBoard ChessBoard { get; }
+    
+    protected bool IsEnemy(Position position)
+    {
+        var piece = ChessBoard.GetPieceByPosition(position);
+        return piece != null && piece.Color != Color;
+    }
+    
+    protected bool IsFreePosition(Position position) => ChessBoard.GetPieceByPosition(position) == null;
+    
     protected bool CanMove(Position position)
     {
         var piece = ChessBoard.GetPieceByPosition(position);
         return piece == null || piece.Color != Color;
     }
     
-    public void SetPosition(Position position) => Position = position;
+    internal void SetPosition(Position position) => Position = position;
         
-    public void IncreaseMove() => TotalMoves++;
+    internal void IncreaseMove() => TotalMoves++;
         
-    public void DecreaseMove() => TotalMoves--;
+    internal void DecreaseMove() => TotalMoves--;
 
-    public bool IsTherePossibleMove()
+    internal bool IsThereAnyPossibleMove()
     {
-        var mat = PossibleMoves();
-        for (var i = 0; i < ChessBoard.Lines; i++)
+        var possibleMoves = PossibleMoves();
+        
+        for (var i = 0; i < ChessBoard.Rows; i++)
         {
-            for (var j = 0; j < ChessBoard.Rows; j++)
-            {
-                if (mat[i, j]) return true;
-            }
+            for (var j = 0; j < ChessBoard.Columns; j++)
+                if (possibleMoves[i, j])
+                    return true;
         }
 
         return false;
     }
 
-    public bool IsPossibleMoveToPosition(Position position) => PossibleMoves()[position.Line, position.Row];
+    internal bool IsPossibleMoveToPosition(Position position) => PossibleMoves()[position.Row, position.Column];
 
-    public abstract bool[,] PossibleMoves();
+    internal abstract bool[,] PossibleMoves();
 }

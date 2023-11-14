@@ -1,10 +1,8 @@
-﻿using System;
+﻿namespace ChessGame.Board;
 
-namespace ChessGame.Board;
-
-public class BoardException : Exception
+internal class BoardException : Exception
 {
-    public BoardException(string msg) : base(msg)
+    internal BoardException(string msg) : base(msg)
     {
     }
 }

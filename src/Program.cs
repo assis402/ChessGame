@@ -1,58 +1,43 @@
-﻿using System;
-using ChessGame.Board;
+﻿using ChessGame.Board;
 using ChessGame.Pieces;
 
 namespace ChessGame;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static void Main()
     {
-        try
-        {
-            var match = new ChessMatch();
+        var chessMatch = new ChessMatch();
+        IGameScreen gameScreen = new GameScreen();
 
-            while (!match.Finished)
+        while (!chessMatch.Finished)
+        {
+            try
             {
-                try
-                {
-                    Console.Clear();
-                    Screen.PrintMatch(match);
+                Clear();
+                gameScreen.PrintMatch(chessMatch);
 
-                    Console.WriteLine();
-                    Console.Write("Origin: ");
+                var origin = gameScreen.ReadOrigin();
+                chessMatch.ValidateOriginPosition(origin);
 
-                    var origin = Screen.WrithPosition().ToPosition();
-                    match.ValidateOriginPosition(origin);
+                var possiblePositions = chessMatch.ChessBoard.GetPieceByPosition(origin).PossibleMoves();
 
-                    var possiblePositions = match.ChessBoard.GetPieceByPosition(origin).PossibleMoves();
+                Clear();
+                gameScreen.PrintBoard(chessMatch.ChessBoard, possiblePositions);
+                
+                var destiny = gameScreen.ReadDestiny();
+                chessMatch.ValidateDestinyPosition(origin, destiny);
 
-                    Console.Clear();
-                    Screen.PrintBoard(match.ChessBoard, possiblePositions);
-
-                    Console.WriteLine();
-                    Console.Write("Destiny: ");
-
-                    var destiny = Screen.WrithPosition().ToPosition();
-                    match.ValidateDestinyPosition(origin, destiny);
-
-                    match.TryMove(origin, destiny);
-                }
-                catch (BoardException e)
-                {
-                    Console.WriteLine(e.Message);
-                    Console.ReadLine();
-                }
+                chessMatch.TryMovePiece(origin, destiny);
             }
-
-            Console.Clear();
-            Screen.PrintMatch(match);
-        }
-        catch (BoardException e)
-        {
-            Console.WriteLine(e.Message);
+            catch (BoardException e)
+            {
+                gameScreen.PrintError(e.Message);
+            }
         }
 
-        Console.ReadLine();
+        Clear();
+        gameScreen.PrintMatch(chessMatch);
+        ReadLine();
     }
 }

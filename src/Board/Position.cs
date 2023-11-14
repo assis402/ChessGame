@@ -1,24 +1,22 @@
 ﻿namespace ChessGame.Board;
 
-public class Position
+internal class Position
 {
-    public int Line { get; set; }
-    public int Row { get; set; }
-
-    public Position(int line, int row)
+    internal Position(int row, int column)
     {
-        Line = line;
         Row = row;
+        Column = column;
     }
+    
+    internal int Row { get; set; }
+    
+    internal int Column { get; set; }
         
-    public void DefineValues(int line, int row)
+    internal void SetValues(int row, int column)
     {
-        Line = line;
         Row = row;
+        Column = column;
     }
-
-    public override string ToString()
-    {
-        return Line + ", "  + Row;
-    }
+    
+    public override string ToString() => Row + ", "  + Column;
 }

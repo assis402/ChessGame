@@ -4,17 +4,17 @@ namespace ChessGame.Pieces;
 
 internal class ChessPosition
 {
-    private char Row { get; set; }
-
-    private int Line { get; set; }
-
-    public ChessPosition(char row, int line)
+    internal ChessPosition(char column, int row)
     {
+        Column = column;
         Row = row;
-        Line = line;
     }
+    
+    private char Column { get; set; }
 
-    public Position ToPosition() => new(8 - Line, Row - 'a');
+    private int Row { get; set; }
 
-    public override string ToString() => "" + Row + Line;
+    internal Position ConvertToNumericPosition() => new(8 - Row, Column - 'a');
+
+    public override string ToString() => "" + Column + Row;
 }

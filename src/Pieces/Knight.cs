@@ -4,63 +4,49 @@ namespace ChessGame.Pieces;
 
 internal class Knight : Piece
 {
-    public Knight(ChessBoard chessBoard, Color color) : base(chessBoard, color)
+    internal Knight(ChessBoard chessBoard, Color color) : base(chessBoard, color)
     {
     }
+    
+    public override string ToString() => "N";
 
-    public override bool[,] PossibleMoves()
+    internal override bool[,] PossibleMoves()
     {
-        var mat = new bool[ChessBoard.Lines, ChessBoard.Rows];
-        var pos = new Position(0, 0);
+        var match = new bool[ChessBoard.Rows, ChessBoard.Columns];
+        var position = new Position(0, 0);
 
-        pos.DefineValues(Position.Line - 1, Position.Row - 2);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line - 2, Position.Row - 1);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line - 2, Position.Row + 1);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line - 1, Position.Row + 2);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line + 1, Position.Row + 2);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line + 2, Position.Row + 1);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line + 2, Position.Row - 1);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
-        pos.DefineValues(Position.Line + 1, Position.Row - 2);
-        if (ChessBoard.ValidatePosition(pos) && CanMove(pos))
-        {
-            mat[pos.Line, pos.Row] = true;
-        }
+        position.SetValues(Position.Row - 1, Position.Column - 2);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row - 2, Position.Column - 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row - 2, Position.Column + 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row - 1, Position.Column + 2);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row + 1, Position.Column + 2);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row + 2, Position.Column + 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
-        return mat;
+        position.SetValues(Position.Row + 2, Position.Column - 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
+        
+        position.SetValues(Position.Row + 1, Position.Column - 2);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
+        return match;
     }
-
-    public override string ToString()
-    {
-        return "N";
-    }
-
 }

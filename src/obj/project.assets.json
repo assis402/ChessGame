@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\assis\\Desktop\\DEV\\ChessGame\\src\\ChessGame.csproj",
+      "projectUniqueName": "C:\\Users\\assis\\OneDrive\\Área de Trabalho\\DEV\\ChessGame\\src\\ChessGame.csproj",
       "projectName": "ChessGame",
-      "projectPath": "C:\\Users\\assis\\Desktop\\DEV\\ChessGame\\src\\ChessGame.csproj",
+      "projectPath": "C:\\Users\\assis\\OneDrive\\Área de Trabalho\\DEV\\ChessGame\\src\\ChessGame.csproj",
       "packagesPath": "C:\\Users\\assis\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\assis\\Desktop\\DEV\\ChessGame\\src\\obj\\",
+      "outputPath": "C:\\Users\\assis\\OneDrive\\Área de Trabalho\\DEV\\ChessGame\\src\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\assis\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
       }
     }
   }

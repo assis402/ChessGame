@@ -1,28 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ChessGame.Board;
+﻿using ChessGame.Board;
 
 namespace ChessGame.Pieces;
 
 internal class ChessMatch
 {
-    public ChessBoard ChessBoard { get; private set; }
-    
-    public int Turn { get; private set; }
-    
-    public Color CurrentPlayer { get; private set; }
-    
-    public bool Finished { get; private set; }
-    
-    private readonly HashSet<Piece> _pieces;
-    
-    private readonly HashSet<Piece> _capturedPieces;
-    
-    public bool Check { get; private set; }
-    
-    public Piece EnPassant { get; private set; }
-    
-    public ChessMatch()
+    internal ChessMatch()
     {
         ChessBoard = new ChessBoard(8, 8);
         Turn = 1;
@@ -35,7 +17,23 @@ internal class ChessMatch
         
         PutPiecesOnTheBoard();
     }
-
+    
+    internal ChessBoard ChessBoard { get; private set; }
+    
+    internal int Turn { get; private set; }
+    
+    internal Color CurrentPlayer { get; private set; }
+    
+    internal bool Finished { get; private set; }
+    
+    private readonly HashSet<Piece> _pieces;
+    
+    private readonly HashSet<Piece> _capturedPieces;
+    
+    internal bool Check { get; private set; }
+    
+    internal Piece EnPassant { get; private set; }
+    
     private Piece Move(Position origin, Position destiny)
     {
         var piece = ChessBoard.RemovePiece(origin);
@@ -50,14 +48,14 @@ internal class ChessMatch
 
         if (piece is Pawn)
         {
-            if (origin.Row != destiny.Row && capturedPiece == null)
+            if (origin.Column != destiny.Column && capturedPiece == null)
             {
                 Position posP;
                 if (piece.Color == Color.White)
-                    posP = new Position(destiny.Line + 1, destiny.Row);
+                    posP = new Position(destiny.Row + 1, destiny.Column);
 
                 else
-                    posP = new Position(destiny.Line - 1, destiny.Row);
+                    posP = new Position(destiny.Row - 1, destiny.Column);
 
                 capturedPiece = ChessBoard.RemovePiece(posP);
                 _capturedPieces.Add(capturedPiece);
@@ -66,19 +64,19 @@ internal class ChessMatch
 
         // ROQUE
 
-        if (piece is King && destiny.Row == origin.Row + 2)
+        if (piece is King && destiny.Column == origin.Column + 2)
         {
-            var originR = new Position(origin.Line, origin.Row + 3);
-            var destinyR = new Position(origin.Line, origin.Row + 1);
+            var originR = new Position(origin.Row, origin.Column + 3);
+            var destinyR = new Position(origin.Row, origin.Column + 1);
             var removePiece = ChessBoard.RemovePiece(originR);
             removePiece.IncreaseMove();
             ChessBoard.PutPiece(removePiece, destinyR);
         }
 
-        if (piece is King && destiny.Row == origin.Row - 2)
+        if (piece is King && destiny.Column == origin.Column - 2)
         {
-            var originR = new Position(origin.Line, origin.Row - 4);
-            var destinyR = new Position(origin.Line, origin.Row - 1);
+            var originR = new Position(origin.Row, origin.Column - 4);
+            var destinyR = new Position(origin.Row, origin.Column - 1);
             var removePiece = ChessBoard.RemovePiece(originR);
             removePiece.IncreaseMove();
             ChessBoard.PutPiece(removePiece, destinyR);
@@ -87,7 +85,7 @@ internal class ChessMatch
         return capturedPiece;
     }
 
-    public void TryMove(Position origin, Position destiny)
+    internal void TryMovePiece(Position origin, Position destiny)
     {
         var capturedPiece = Move(origin, destiny);
 
@@ -103,7 +101,7 @@ internal class ChessMatch
 
         if (piece is Pawn)
         {
-            if (piece.Color == Color.White && destiny.Line == 0 || piece.Color == Color.Black && destiny.Line == 7)
+            if (piece.Color == Color.White && destiny.Row == 0 || piece.Color == Color.Black && destiny.Row == 7)
             {
                 piece = ChessBoard.RemovePiece(destiny);
                 _pieces.Remove(piece);
@@ -130,7 +128,7 @@ internal class ChessMatch
 
         // EN PASSANT
 
-        if (piece is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2))
+        if (piece is Pawn && (destiny.Row == origin.Row - 2 || destiny.Row == origin.Row + 2))
             EnPassant = piece;
         else
             EnPassant = null;
@@ -152,17 +150,17 @@ internal class ChessMatch
 
         if (piece is Pawn)
         {
-            if (origin.Row != destiny.Row && capturedPiece == EnPassant)
+            if (origin.Column != destiny.Column && capturedPiece == EnPassant)
             {
                 var pawn = ChessBoard.RemovePiece(destiny);
                 Position posP;
                 if (piece.Color == Color.White)
                 {
-                    posP = new Position(3, destiny.Row);
+                    posP = new Position(3, destiny.Column);
                 }
                 else
                 {
-                    posP = new Position(4, destiny.Row);
+                    posP = new Position(4, destiny.Column);
                 }
 
                 ChessBoard.PutPiece(pawn, posP);
@@ -171,36 +169,36 @@ internal class ChessMatch
 
         // ROQUE
 
-        if (piece is King && destiny.Row == origin.Row + 2)
+        if (piece is King && destiny.Column == origin.Column + 2)
         {
-            var originR = new Position(origin.Line, origin.Row + 3);
-            var destinyR = new Position(origin.Line, origin.Row + 1);
+            var originR = new Position(origin.Row, origin.Column + 3);
+            var destinyR = new Position(origin.Row, origin.Column + 1);
             var removePiece = ChessBoard.RemovePiece(destinyR);
             removePiece.DecreaseMove();
             ChessBoard.PutPiece(removePiece, originR);
         }
 
-        if (piece is King && destiny.Row == origin.Row - 2)
+        if (piece is King && destiny.Column == origin.Column - 2)
         {
-            var originR = new Position(origin.Line, origin.Row - 4);
-            var destinyR = new Position(origin.Line, origin.Row - 1);
+            var originR = new Position(origin.Row, origin.Column - 4);
+            var destinyR = new Position(origin.Row, origin.Column - 1);
             var r = ChessBoard.RemovePiece(destinyR);
             r.DecreaseMove();
             ChessBoard.PutPiece(r, originR);
         }
     }
 
-    public void ValidateOriginPosition(Position pos)
+    internal void ValidateOriginPosition(Position position)
     {
-        if (ChessBoard.GetPieceByPosition(pos) == null)
+        if (ChessBoard.GetPieceByPosition(position) == null)
             throw new BoardException("There is no piece in the chosen position.");
-        else if (CurrentPlayer != ChessBoard.GetPieceByPosition(pos).Color)
+        else if (CurrentPlayer != ChessBoard.GetPieceByPosition(position).Color)
             throw new BoardException("The piece chosen isn't yours.");
-        else if (!ChessBoard.GetPieceByPosition(pos).IsTherePossibleMove())
+        else if (!ChessBoard.GetPieceByPosition(position).IsThereAnyPossibleMove())
             throw new BoardException("There are no possible moves for this piece.");
     }
 
-    public void ValidateDestinyPosition(Position origin, Position destiny)
+    internal void ValidateDestinyPosition(Position origin, Position destiny)
     {
         if (!ChessBoard.GetPieceByPosition(origin).IsPossibleMoveToPosition(destiny))
             throw new BoardException("Invalid destination position.");
@@ -209,7 +207,7 @@ internal class ChessMatch
     private void ChangePlayer() 
         => CurrentPlayer = CurrentPlayer == Color.White ? Color.Black : Color.White;
 
-    public HashSet<Piece> GetCapturedPieces(Color color)
+    internal HashSet<Piece> GetCapturedPieces(Color color)
     {
         var auxiliaryHashSet = new HashSet<Piece>();
         
@@ -248,7 +246,7 @@ internal class ChessMatch
         {
             var possibleMoves = piece.PossibleMoves();
             
-            if (possibleMoves[king.Position.Line, king.Position.Row])
+            if (possibleMoves[king.Position.Row, king.Position.Column])
                 return true;
         }
 
@@ -263,9 +261,9 @@ internal class ChessMatch
         foreach (var piece in GetPiecesOnTheBoard(color))
         {
             var possibleMoves = piece.PossibleMoves();
-            for (var i = 0; i < ChessBoard.Lines; i++)
+            for (var i = 0; i < ChessBoard.Rows; i++)
             {
-                for (var j = 0; j < ChessBoard.Rows; j++)
+                for (var j = 0; j < ChessBoard.Columns; j++)
                 {
                     if (possibleMoves[i, j])
                     {
@@ -286,9 +284,9 @@ internal class ChessMatch
         return true;
     }
 
-    private void PutNewPiece(char row, int line, Piece piece)
+    private void PutNewPiece(char column, int row, Piece piece)
     {
-        ChessBoard.PutPiece(piece, new ChessPosition(row, line).ToPosition());
+        ChessBoard.PutPiece(piece, new ChessPosition(column, row).ConvertToNumericPosition());
         _pieces.Add(piece);
     }
 

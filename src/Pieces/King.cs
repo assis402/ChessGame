@@ -6,7 +6,7 @@ internal class King : Piece
 {
     private readonly ChessMatch _match;
 
-    public King(ChessBoard chessBoard, Color color, ChessMatch match) : base(chessBoard, color) 
+    internal King(ChessBoard chessBoard, Color color, ChessMatch match) : base(chessBoard, color) 
         => _match = match;
 
     public override string ToString() => "K";
@@ -17,76 +17,76 @@ internal class King : Piece
         return piece != null && piece is Rook && piece.Color == Color && piece.TotalMoves == 0;
     }
 
-    public override bool[,] PossibleMoves()
+    internal override bool[,] PossibleMoves()
     {
-        var match = new bool[ChessBoard.Lines, ChessBoard.Rows];
+        var match = new bool[ChessBoard.Rows, ChessBoard.Columns];
         var position = new Position(0, 0);
 
         // N
-        position.DefineValues(Position.Line - 1, Position.Row);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row - 1, Position.Column);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // NE
-        position.DefineValues(Position.Line - 1, Position.Row + 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row - 1, Position.Column + 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // E
-        position.DefineValues(Position.Line, Position.Row + 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row, Position.Column + 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // SE
-        position.DefineValues(Position.Line + 1, Position.Row + 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position))
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row + 1, Position.Column + 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position))
+            match[position.Row, position.Column] = true;
 
         // S
-        position.DefineValues(Position.Line + 1, Position.Row);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row + 1, Position.Column);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // SW
-        position.DefineValues(Position.Line + 1, Position.Row - 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row + 1, Position.Column - 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // W
-        position.DefineValues(Position.Line, Position.Row - 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row, Position.Column - 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // NW
-        position.DefineValues(Position.Line - 1, Position.Row - 1);
-        if (ChessBoard.ValidatePosition(position) && CanMove(position)) 
-            match[position.Line, position.Row] = true;
+        position.SetValues(Position.Row - 1, Position.Column - 1);
+        if (ChessBoard.IsValidPosition(position) && CanMove(position)) 
+            match[position.Row, position.Column] = true;
 
         // ROQUE
 
         if (TotalMoves == 0 && !_match.Check)
         {
-            var posT1 = new Position(Position.Line, Position.Row+3);
+            var posT1 = new Position(Position.Row, Position.Column+3);
             if (TestRookToRoque(posT1))
             {
-                var p1 = new Position(Position.Line, Position.Row + 1);
-                var p2 = new Position(Position.Line, Position.Row + 2);
+                var p1 = new Position(Position.Row, Position.Column + 1);
+                var p2 = new Position(Position.Row, Position.Column + 2);
                 if (ChessBoard.GetPieceByPosition(p1) == null && ChessBoard.GetPieceByPosition(p2) == null)
                 {
-                    match[Position.Line, Position.Row + 2] = true;
+                    match[Position.Row, Position.Column + 2] = true;
                 }
 
             }
 
-            var posT2 = new Position(Position.Line, Position.Row - 4);
+            var posT2 = new Position(Position.Row, Position.Column - 4);
             if (TestRookToRoque(posT2))
             {
-                var p1 = new Position(Position.Line, Position.Row - 1);
-                var p2 = new Position(Position.Line, Position.Row - 2);
-                var p3 = new Position(Position.Line, Position.Row - 3);
+                var p1 = new Position(Position.Row, Position.Column - 1);
+                var p2 = new Position(Position.Row, Position.Column - 2);
+                var p3 = new Position(Position.Row, Position.Column - 3);
                 if (ChessBoard.GetPieceByPosition(p1) == null && ChessBoard.GetPieceByPosition(p2) == null && ChessBoard.GetPieceByPosition(p3) == null)
                 {
-                    match[Position.Line, Position.Row - 2] = true;
+                    match[Position.Row, Position.Column - 2] = true;
                 }
 
             }

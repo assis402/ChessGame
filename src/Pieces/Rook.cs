@@ -4,74 +4,61 @@ namespace ChessGame.Pieces;
 
 internal class Rook : Piece
 {
-    public Rook(ChessBoard chessBoard, Color color) : base(chessBoard, color)
+    internal Rook(ChessBoard chessBoard, Color color) : base(chessBoard, color)
     {
     }
 
-    public override bool[,] PossibleMoves()
+    public override string ToString() => "R";
+
+    internal override bool[,] PossibleMoves()
     {
-        var mat = new bool[ChessBoard.Lines, ChessBoard.Rows];
-        var pos = new Position(0, 0);
+        var match = new bool[ChessBoard.Rows, ChessBoard.Columns];
+        var position = new Position(0, 0);
 
         // N
-        pos.DefineValues(Position.Line - 1, Position.Row);
-        while (ChessBoard.ValidatePosition(pos) && CanMove(pos))
+        position.SetValues(Position.Row - 1, Position.Column);
+        while (ChessBoard.IsValidPosition(position) && CanMove(position))
         {
-            mat[pos.Line, pos.Row] = true;
-            if (ChessBoard.GetPieceByPosition(pos) != null && ChessBoard.GetPieceByPosition(pos).Color != Color)
-            {
-                break;
-            }
-            pos.Line -= 1;
-
+            match[position.Row, position.Column] = true;
+            
+            if (IsEnemy(position)) break;
+            
+            position.Row -= 1;
         }
 
         // S
-        pos.DefineValues(Position.Line + 1, Position.Row);
-        while (ChessBoard.ValidatePosition(pos) && CanMove(pos))
+        position.SetValues(Position.Row + 1, Position.Column);
+        while (ChessBoard.IsValidPosition(position) && CanMove(position))
         {
-            mat[pos.Line, pos.Row] = true;
-            if (ChessBoard.GetPieceByPosition(pos) != null && ChessBoard.GetPieceByPosition(pos).Color != Color)
-            {
-                break;
-            }
-            pos.Line += 1;
-
+            match[position.Row, position.Column] = true;
+            
+            if (IsEnemy(position)) break;
+            
+            position.Row += 1;
         }
 
         // E
-        pos.DefineValues(Position.Line, Position.Row + 1);
-        while (ChessBoard.ValidatePosition(pos) && CanMove(pos))
+        position.SetValues(Position.Row, Position.Column + 1);
+        while (ChessBoard.IsValidPosition(position) && CanMove(position))
         {
-            mat[pos.Line, pos.Row] = true;
-            if (ChessBoard.GetPieceByPosition(pos) != null && ChessBoard.GetPieceByPosition(pos).Color != Color)
-            {
-                break;
-            }
-            pos.Row += 1;
-
+            match[position.Row, position.Column] = true;
+            
+            if (IsEnemy(position)) break;
+            
+            position.Column += 1;
         }
 
         // W
-        pos.DefineValues(Position.Line, Position.Row - 1);
-        while (ChessBoard.ValidatePosition(pos) && CanMove(pos))
+        position.SetValues(Position.Row, Position.Column - 1);
+        while (ChessBoard.IsValidPosition(position) && CanMove(position))
         {
-            mat[pos.Line, pos.Row] = true;
-            if (ChessBoard.GetPieceByPosition(pos) != null && ChessBoard.GetPieceByPosition(pos).Color != Color)
-            {
-                break;
-            }
-            pos.Row -= 1;
-
+            match[position.Row, position.Column] = true;
+            
+            if (IsEnemy(position)) break;
+            
+            position.Column -= 1;
         }
 
-        return mat;
-
+        return match;
     }
-
-    public override string ToString()
-    {
-        return "R";
-    }
-
 }
